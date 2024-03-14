@@ -61,19 +61,12 @@ const SubmitForm = () => {
     }, []);
 
     useEffect(() => {
-        if (successDialog === true) {
-            fetchSuccess();
+        if (fullName && email && mobileNumber && otpNumber && city && pinCode && purchasePlan) {
+            setError("")
         }
-    }, [successDialog]);
+    }, [fullName, email, mobileNumber, otpNumber, city, pinCode, purchasePlan]);
 
-    const fetchSuccess = async () => {
-        try {
-            const response = await axios.get(
-                "https://cl.adosiz.net/tracking/click/220774/1448/305312?unique_id=publisher_click_id&sub_id1=your_sub_id1&sub_id2=your_sub_id2"
-            );
-            console.log("response", response);
-        } catch (error) { }
-    };
+   
 
     const fetchState = async () => {
         try {
@@ -146,6 +139,7 @@ const SubmitForm = () => {
 
     const handleSubmit = async () => {
         // setSuccessDialog(true);
+        // navigate("/thankyou-page")
         const body = {
             fullName: fullName,
             email: email,
@@ -166,9 +160,9 @@ const SubmitForm = () => {
             purchasePlan
         ) {
             const response = await axios.post(BASE_URL + "/lead/create", body);
-            console.log("response", response.data);
             if (response.data.status === true) {
-                setSuccessDialog(true);
+                navigate("/thankyou")
+                // setSuccessDialog(true);
             }
         } else {
             setError("All fields Are required");
@@ -440,9 +434,9 @@ const SubmitForm = () => {
                     </CardActions>
                 </Card>
             </Box>
-            <Dialog open={successDialog} onClose={() => setSuccessDialog(false)}>
+            {/* <Dialog open={successDialog} onClose={() => setSuccessDialog(false)}>
                 <Card sx={{ padding: "20px", textAlign: "center" }}>
-                <iframe src="https://conv.adosiz.net/tracking/conversion/220774?country=India&partner_trans_id={partner_trans_id}&os_version=android&event_type=MobLead&order_id=order id macro&order_value=order value macro" frameborder="0" height="0" width="0" scrolling="no" ></iframe>
+                    <iframe src="https://conv.adosiz.net/tracking/conversion/220774?country=India&partner_trans_id={partner_trans_id}&os_version=android&event_type=MobLead&order_id=order id macro&order_value=order value macro" frameborder="0" height="0" width="0" scrolling="no" ></iframe>
                     <h1>Test Ride Confirmed</h1>
                     <h3>Thank You For Choosing TVS Motors.</h3>
                     <div style={{ textAlign: "center" }}>
@@ -463,7 +457,7 @@ const SubmitForm = () => {
                         </Button>
                     </div>
                 </Card>
-            </Dialog>
+            </Dialog> */}
         </div>
     );
 };

@@ -13,12 +13,12 @@ function App() {
 
   return (
     <div style={{ background: "#f3f3f3", height: isMobileDevice ? "100vh" : "100%" }}>
-        <BrowserRouter>
-    <Routes>
-       <Route path="/" element={<SubmitForm />} />
-       <Route path="/thankyou-page" element={<ThankyouPage />} />
-    </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<SubmitForm />} />
+          <Route path="/thankyou" element={<ThankyouPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

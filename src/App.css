@@ -1,3 +1,13 @@
 body{
   margin: 0;
 }
+.check-icon{
+  display: flex;
+  /* border: 2px solid black; */
+  border-radius: 50%;
+  background: linear-gradient(89.58deg, #c71c26 .51%, #213180 97.99%);
+  align-items: center;
+  text-align: center;
+  width: fit-content;
+  margin: 20px;
+}
