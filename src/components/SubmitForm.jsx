@@ -96,7 +96,7 @@ const SubmitForm = () => {
         setOtpNumber(event.target.value);
         const value = event.target.value.trim();
         // Check if the input is a valid 10-digit number
-        if (/^\d{10}$/.test(value)) {
+        if (/^\d{6}$/.test(value)) {
             setIsValidOtp(true);
         } else {
             setIsValidOtp(false);
@@ -247,7 +247,7 @@ const SubmitForm = () => {
                                                 <Typography
                                                     onClick={handleResendOtp}
                                                     fontWeight={"600"}
-                                                    width={"25%"}
+                                                    width={"38%"}
                                                     style={isValidNumber ? iconStyle : {}}
                                                 >
                                                     Request OTP
@@ -263,17 +263,17 @@ const SubmitForm = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={6}>
                                     <TextField
-                                        // inputProps={{
-                                        //     maxLength: 10,
-                                        //     minlength: 10
-                                        // }}
+                                      inputProps={{
+                                        maxLength: 6,
+                                        minlength: 6,
+                                    }}
                                         InputProps={{
                                             style: { borderRadius: "25px", background: "#f2f2f2" },
                                             endAdornment: (
                                                 <Typography
                                                     onClick={handleResendOtp}
                                                     fontWeight={"600"}
-                                                    width={"25%"}
+                                                    width={"35%"}
                                                     style={isValidOtp ? iconStyle : {}}
                                                 >
                                                     Resend OTP
