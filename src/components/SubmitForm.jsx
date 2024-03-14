@@ -4,9 +4,10 @@ import logo from "../assets/ronin-logo.png";
 import bgImage from "../assets/banner-m.webp";
 import LocationIcon from "../assets/MicrosoftTeams-image (7).png";
 import axios from 'axios';
+import ThankyouPage from './ThankyouPage';
 
 const SubmitForm = () => {
-    const BASE_URL = "https://tvsapi.advertice.in"
+    const BASE_URL = "https://roninapi.advertice.in"
     const isMobileDevice = useMediaQuery('(min-width:787px)');
     const [isValidNumber, setIsValidNumber] = useState(false);
     const [isValidOtp, setIsValidOtp] = useState(false);
@@ -107,25 +108,26 @@ console.log(event.target.checked);
     }
 
     const handleSubmit = async () => {
-        const body = {
-            fullName: fullName,
-            email: email,
-            contact: mobileNumber,
-            otp: otpNumber,
-            cityId: city,
-            pincode: pinCode,
-            gender: gender,
-            purchasePlan: purchasePlan
-        }
-        if (fullName && email && mobileNumber && otpNumber && city && pinCode && gender && purchasePlan) {
-            const response = await axios.post(BASE_URL + '/lead/create', body);
-            console.log('response', response.data);
-            if (response.data.status === true) {
-                setSuccessDialog(true)
-            }
-        } else {
-            setError("All fields Are required")
-        }
+        setSuccessDialog(true)
+        // const body = {
+        //     fullName: fullName,
+        //     email: email,
+        //     contact: mobileNumber,
+        //     otp: otpNumber,
+        //     cityId: city,
+        //     pincode: pinCode,
+        //     gender: gender,
+        //     purchasePlan: purchasePlan
+        // }
+        // if (fullName && email && mobileNumber && otpNumber && city && pinCode && gender && purchasePlan) {
+        //     const response = await axios.post(BASE_URL + '/lead/create', body);
+        //     console.log('response', response.data);
+        //     if (response.data.status === true) {
+        //         setSuccessDialog(true)
+        //     }
+        // } else {
+        //     setError("All fields Are required")
+        // }
        
     }
 
@@ -352,25 +354,7 @@ console.log(event.target.checked);
                 </Card>
             </Box>
             <Dialog open={successDialog} onClose={() => setSuccessDialog(false)}>
-               <Card sx={{padding: "20px", textAlign: "center"}}>
-                <h1>Test Ride Confirmed</h1>
-                <h3>Thank you for choosing</h3>
-                    <div style={{textAlign: "center"}}><Button
-                        variant="contained"
-                        sx={{
-                            padding: "1rem",
-                            borderRadius: "0.8rem",
-                            // background: `${colors.button.secondary}`,
-                            "&:hover": {
-                                boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
-                            },
-                        }}
-                        // disabled={activeStep === -1}
-                        onClick={() => setSuccessDialog(false)}
-                    >
-                      Okay
-                    </Button></div>
-               </Card>
+             <ThankyouPage setSuccessDialog={setSuccessDialog} />
             </Dialog>
         </div>
     )
