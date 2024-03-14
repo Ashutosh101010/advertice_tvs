@@ -145,35 +145,34 @@ const SubmitForm = () => {
     };
 
     const handleSubmit = async () => {
-        setSuccessDialog(true);
-        // const body = {
-        //     fullName: fullName,
-        //     email: email,
-        //     contact: mobileNumber,
-        //     otp: otpNumber,
-        //     cityId: city,
-        //     pincode: pinCode,
-        //     gender: gender,
-        //     purchasePlan: purchasePlan,
-        // };
-        // if (
-        //     fullName &&
-        //     email &&
-        //     mobileNumber &&
-        //     otpNumber &&
-        //     city &&
-        //     pinCode &&
-        //     gender &&
-        //     purchasePlan
-        // ) {
-        //     const response = await axios.post(BASE_URL + "/lead/create", body);
-        //     console.log("response", response.data);
-        //     if (response.data.status === true) {
-        //         setSuccessDialog(true);
-        //     }
-        // } else {
-        //     setError("All fields Are required");
-        // }
+        // setSuccessDialog(true);
+        const body = {
+            fullName: fullName,
+            email: email,
+            contact: mobileNumber,
+            otp: otpNumber,
+            cityId: city,
+            pincode: pinCode,
+            // gender: gender,
+            purchasePlan: purchasePlan,
+        };
+        if (
+            fullName &&
+            email &&
+            mobileNumber &&
+            otpNumber &&
+            city &&
+            pinCode &&
+            purchasePlan
+        ) {
+            const response = await axios.post(BASE_URL + "/lead/create", body);
+            console.log("response", response.data);
+            if (response.data.status === true) {
+                setSuccessDialog(true);
+            }
+        } else {
+            setError("All fields Are required");
+        }
     };
 
     return (
