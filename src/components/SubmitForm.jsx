@@ -1,51 +1,87 @@
-import { CardMedia, Card, CardContent, Typography, CardActions, Button, TextField, Box, Grid, FormControlLabel, Radio, Checkbox, InputLabel, Select, MenuItem, FormControl, useMediaQuery, RadioGroup, Dialog, Stack } from '@mui/material'
-import React, { useEffect, useState } from 'react';
+import {
+    CardMedia,
+    Card,
+    CardContent,
+    Typography,
+    CardActions,
+    Button,
+    TextField,
+    Box,
+    Grid,
+    FormControlLabel,
+    Radio,
+    Checkbox,
+    InputLabel,
+    Select,
+    MenuItem,
+    FormControl,
+    useMediaQuery,
+    RadioGroup,
+    Dialog,
+    Stack,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/ronin-logo.png";
 import bgImage from "../assets/banner-m.webp";
 import LocationIcon from "../assets/MicrosoftTeams-image (7).png";
-import axios from 'axios';
-import ThankyouPage from './ThankyouPage';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SubmitForm = () => {
-    const BASE_URL = "https://roninapi.advertice.in"
-    const isMobileDevice = useMediaQuery('(min-width:787px)');
+
+    const navigate = useNavigate();
+    const BASE_URL = "https://roninapi.advertice.in";
+    const isMobileDevice = useMediaQuery("(min-width:787px)");
     const [isValidNumber, setIsValidNumber] = useState(false);
     const [isValidOtp, setIsValidOtp] = useState(false);
     const [checked, setChecked] = useState(false);
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [mobileNumber, setMobileNumber] = useState('');
-    const [otpNumber, setOtpNumber] = useState('');
-    const [state, setState] = useState('');
-    const [city, setCity] = useState('');
-    const [gender, setGender] = useState('');
-    const [pinCode, setPinCode] = useState('');
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [mobileNumber, setMobileNumber] = useState("");
+    const [otpNumber, setOtpNumber] = useState("");
+    const [state, setState] = useState("");
+    const [city, setCity] = useState("");
+    const [gender, setGender] = useState("");
+    const [pinCode, setPinCode] = useState("");
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
-    const [error, setError] = useState('');
-    const [purchasePlan, setPurchasePlan] = useState('');
+    const [error, setError] = useState("");
+    const [purchasePlan, setPurchasePlan] = useState("");
     const [successDialog, setSuccessDialog] = useState(false);
 
     const iconStyle = {
-        background: 'linear-gradient(89.58deg, #c71c26 .51%, #213180 97.99%)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        color: 'linear-gradient(89.58deg, #c71c26 .51%, #213180 97.99%)',
-        cursor: "pointer"
+        background: "linear-gradient(89.58deg, #c71c26 .51%, #213180 97.99%)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        color: "linear-gradient(89.58deg, #c71c26 .51%, #213180 97.99%)",
+        cursor: "pointer",
     };
     useEffect(() => {
         fetchState();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (successDialog === true) {
+            fetchSuccess();
+        }
+    }, [successDialog]);
+
+    const fetchSuccess = async () => {
+        try {
+            const response = await axios.get(
+                "https://cl.adosiz.net/tracking/click/220774/1448/305312?unique_id=publisher_click_id&sub_id1=your_sub_id1&sub_id2=your_sub_id2"
+            );
+            console.log("response", response);
+        } catch (error) { }
+    };
 
     const fetchState = async () => {
         try {
-            const response = await axios.get(BASE_URL + '/meta/state');
+            const response = await axios.get(BASE_URL + "/meta/state");
             const states = response?.data?.states;
-            setStateList(states)
-        } catch (error) {
-
-        }
-    }
+            setStateList(states);
+        } catch (error) { }
+    };
     const handleFullName = (event) => {
         setFullName(event.target.value);
     };
@@ -54,7 +90,7 @@ const SubmitForm = () => {
     };
 
     const handleMobileNumber = (event) => {
-        setMobileNumber(event.target.value)
+        setMobileNumber(event.target.value);
         const value = event.target.value.trim();
         // Check if the input is a valid 10-digit number
         if (/^\d{10}$/.test(value)) {
@@ -64,7 +100,7 @@ const SubmitForm = () => {
         }
     };
     const handleOtp = (event) => {
-        setOtpNumber(event.target.value)
+        setOtpNumber(event.target.value);
         const value = event.target.value.trim();
         // Check if the input is a valid 10-digit number
         if (/^\d{10}$/.test(value)) {
@@ -75,8 +111,8 @@ const SubmitForm = () => {
     };
 
     const handleState = (event) => {
-        const city = event.target.value
-        setCityList(city?.city)
+        const city = event.target.value;
+        setCityList(city?.city);
         setState(event.target.value);
     };
     const handleCity = (event) => {
@@ -92,23 +128,24 @@ const SubmitForm = () => {
     const handleResendOtp = async () => {
         if (isValidNumber === true) {
             try {
-                const response = await axios.post(BASE_URL + '/otp/send', { contact: Number(mobileNumber) });
+                const response = await axios.post(BASE_URL + "/otp/send", {
+                    contact: Number(mobileNumber),
+                });
             } catch (error) {
                 console.log(error);
             }
-
         }
-    }
+    };
     const handlePurchase = (event) => {
         setPurchasePlan(event.target.value);
     };
-    const handleCheckbox = (event) =>{
-        setChecked(!checked)
-console.log(event.target.checked);
-    }
+    const handleCheckbox = (event) => {
+        setChecked(!checked);
+        console.log(event.target.checked);
+    };
 
     const handleSubmit = async () => {
-        setSuccessDialog(true)
+        setSuccessDialog(true);
         // const body = {
         //     fullName: fullName,
         //     email: email,
@@ -117,33 +154,63 @@ console.log(event.target.checked);
         //     cityId: city,
         //     pincode: pinCode,
         //     gender: gender,
-        //     purchasePlan: purchasePlan
-        // }
-        // if (fullName && email && mobileNumber && otpNumber && city && pinCode && gender && purchasePlan) {
-        //     const response = await axios.post(BASE_URL + '/lead/create', body);
-        //     console.log('response', response.data);
+        //     purchasePlan: purchasePlan,
+        // };
+        // if (
+        //     fullName &&
+        //     email &&
+        //     mobileNumber &&
+        //     otpNumber &&
+        //     city &&
+        //     pinCode &&
+        //     gender &&
+        //     purchasePlan
+        // ) {
+        //     const response = await axios.post(BASE_URL + "/lead/create", body);
+        //     console.log("response", response.data);
         //     if (response.data.status === true) {
-        //         setSuccessDialog(true)
+        //         setSuccessDialog(true);
         //     }
         // } else {
-        //     setError("All fields Are required")
+        //     setError("All fields Are required");
         // }
-       
-    }
+    };
 
     return (
         <div>
-            <Box display={'flex'} justifyContent={'end'} sx={{ backgroundImage: !isMobileDevice ? `url(${bgImage})` : "", height: !isMobileDevice ? "250px" : "", backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}>
-                <img src={logo} alt='logo' style={{ margin: "20px", height: !isMobileDevice ? "35px" : "" }} />
+            <Box
+                display={"flex"}
+                justifyContent={"end"}
+                sx={{
+                    backgroundImage: !isMobileDevice ? `url(${bgImage})` : "",
+                    height: !isMobileDevice ? "250px" : "",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+            >
+                <img
+                    src={logo}
+                    alt="logo"
+                    style={{ margin: "20px", height: !isMobileDevice ? "35px" : "" }}
+                />
             </Box>
-            <Box display={'flex'} justifyContent={'center'}>
-                <Card sx={{ width: ['90%', '60%'], height: '100%', p: [0, 10], m: [1, 0] }}>
+            <Box display={"flex"} justifyContent={"center"}>
+                <Card
+                    sx={{ width: ["90%", "60%"], height: "100%", p: [0, 10], m: [1, 0] }}
+                >
                     {/* <CardMedia
                     sx={{ height: 140 }}
                     image="/static/images/cards/contemplative-reptile.jpg"
                     title="green iguana"
                 /> */}
-                    <Typography fontWeight={'600'} fontSize={'15px'} textAlign={'center'} color={'#192841'} mt={'30px'}>
+                    <Typography
+                        fontWeight={"600"}
+                        fontSize={"15px"}
+                        textAlign={"center"}
+                        color={"#192841"}
+                        mt={"30px"}
+                    >
                         PLEASE SHARE YOUR PERSONAL DETAILS
                     </Typography>
                     <CardContent>
@@ -151,20 +218,24 @@ console.log(event.target.checked);
                             <Grid container spacing={2} pt={4}>
                                 <Grid item xs={12} sm={6} md={6}>
                                     <TextField
-                                        InputProps={{ style: { borderRadius: '25px', background: "#f2f2f2" } }}
+                                        InputProps={{
+                                            style: { borderRadius: "25px", background: "#f2f2f2" },
+                                        }}
                                         fullWidth
-                                        type='text'
-                                        placeholder='Full Name'
+                                        type="text"
+                                        placeholder="Full Name"
                                         onChange={handleFullName}
                                         value={fullName}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={6}>
                                     <TextField
-                                        InputProps={{ style: { borderRadius: '25px', background: "#f2f2f2" } }}
+                                        InputProps={{
+                                            style: { borderRadius: "25px", background: "#f2f2f2" },
+                                        }}
                                         fullWidth
-                                        type='email'
-                                        placeholder='Email'
+                                        type="email"
+                                        placeholder="Email"
                                         onChange={handleEmail}
                                         value={email}
                                     />
@@ -175,24 +246,24 @@ console.log(event.target.checked);
                                     <TextField
                                         inputProps={{
                                             maxLength: 10,
-                                            minlength: 10
+                                            minlength: 10,
                                         }}
                                         InputProps={{
-                                            style: { borderRadius: '25px', background: "#f2f2f2" },
+                                            style: { borderRadius: "25px", background: "#f2f2f2" },
                                             endAdornment: (
                                                 <Typography
                                                     onClick={handleResendOtp}
-                                                    fontWeight={'600'}
-                                                    width={'25%'}
+                                                    fontWeight={"600"}
+                                                    width={"25%"}
                                                     style={isValidNumber ? iconStyle : {}}
                                                 >
                                                     Request OTP
                                                 </Typography>
-                                            )
+                                            ),
                                         }}
                                         fullWidth
-                                        type='tel'
-                                        placeholder='Mobile Number'
+                                        type="tel"
+                                        placeholder="Mobile Number"
                                         onChange={handleMobileNumber}
                                         value={mobileNumber}
                                     />
@@ -204,23 +275,24 @@ console.log(event.target.checked);
                                         //     minlength: 10
                                         // }}
                                         InputProps={{
-                                            style: { borderRadius: '25px', background: "#f2f2f2" },
+                                            style: { borderRadius: "25px", background: "#f2f2f2" },
                                             endAdornment: (
                                                 <Typography
-                                                onClick={handleResendOtp}
-                                                    fontWeight={'600'}
-                                                    width={'25%'}
+                                                    onClick={handleResendOtp}
+                                                    fontWeight={"600"}
+                                                    width={"25%"}
                                                     style={isValidOtp ? iconStyle : {}}
                                                 >
                                                     Resend OTP
                                                 </Typography>
-                                            )
+                                            ),
                                         }}
                                         onChange={handleOtp}
                                         value={otpNumber}
                                         fullWidth
-                                        type='tel'
-                                        placeholder='OTP' />
+                                        type="tel"
+                                        placeholder="OTP"
+                                    />
                                 </Grid>
                             </Grid>
                             <Grid container spacing={2} pt={4}>
@@ -228,7 +300,7 @@ console.log(event.target.checked);
                                     <FormControl fullWidth>
                                         <InputLabel id="demo-simple-select-label">State</InputLabel>
                                         <Select
-                                            sx={{ borderRadius: '25px', background: "#f2f2f2" }}
+                                            sx={{ borderRadius: "25px", background: "#f2f2f2" }}
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             // value={age}
@@ -236,11 +308,12 @@ console.log(event.target.checked);
                                             onChange={handleState}
                                             value={state}
                                         >
-                                            {
-                                                stateList?.length > 0 && stateList?.map((state) => {
-                                                    return <MenuItem value={state}>{state.name}</MenuItem>
-                                                })
-                                            }
+                                            {stateList?.length > 0 &&
+                                                stateList?.map((state) => {
+                                                    return (
+                                                        <MenuItem value={state}>{state.name}</MenuItem>
+                                                    );
+                                                })}
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -248,7 +321,7 @@ console.log(event.target.checked);
                                     <FormControl fullWidth>
                                         <InputLabel id="demo-simple-select-label">City</InputLabel>
                                         <Select
-                                            sx={{ borderRadius: '25px', background: "#f2f2f2" }}
+                                            sx={{ borderRadius: "25px", background: "#f2f2f2" }}
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             // value={age}
@@ -256,11 +329,12 @@ console.log(event.target.checked);
                                             onChange={handleCity}
                                             value={city}
                                         >
-                                            {
-                                                cityList?.length > 0 && cityList?.map((city) => {
-                                                    return <MenuItem value={city.id}>{city.city}</MenuItem>
-                                                })
-                                            }
+                                            {cityList?.length > 0 &&
+                                                cityList?.map((city) => {
+                                                    return (
+                                                        <MenuItem value={city.id}>{city.city}</MenuItem>
+                                                    );
+                                                })}
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -269,51 +343,46 @@ console.log(event.target.checked);
                                 <Grid item xs={12} sm={6} md={6}>
                                     <TextField
                                         InputProps={{
-                                            style: { borderRadius: '25px', background: "#f2f2f2" },
+                                            style: { borderRadius: "25px", background: "#f2f2f2" },
                                             endAdornment: (
                                                 <>
-                                                    <img src={LocationIcon} alt='' />
+                                                    <img src={LocationIcon} alt="" />
                                                 </>
-                                            )
+                                            ),
                                         }}
                                         fullWidth
-                                        type='text'
-                                        placeholder='Pincode/Location'
+                                        type="text"
+                                        placeholder="Pincode/Location"
                                         onChange={handleLocation}
                                         value={pinCode}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6} md={6}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-                                        <Select
-                                            sx={{ borderRadius: '25px', background: "#f2f2f2" }}
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={gender}
-                                            label="Gender"
-                                            onChange={handleGender}
-                                        >
-                                            <MenuItem value={'male'}>Male</MenuItem>
-                                            <MenuItem value={'female'}>Female</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
+                                {/* <Grid item xs={12} sm={6} md={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Gender
+                    </InputLabel>
+                    <Select
+                      sx={{ borderRadius: "25px", background: "#f2f2f2" }}
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={gender}
+                      label="Gender"
+                      onChange={handleGender}
+                    >
+                      <MenuItem value={"male"}>Male</MenuItem>
+                      <MenuItem value={"female"}>Female</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid> */}
                             </Grid>
-
                         </Box>
                         <Box>
-                            <Typography
-                                fontSize={'14px'} fontWeight={'600'} mt={2}>
+                            <Typography fontSize={"14px"} fontWeight={"600"} mt={2}>
                                 Purches Plan?
                             </Typography>
 
-
-
-
-                            <Box
-                                display={['grid', 'flex']}
-                            >
+                            <Box display={["grid", "flex"]}>
                                 <RadioGroup
                                     row
                                     aria-labelledby="demo-row-radio-buttons-group-label"
@@ -321,43 +390,83 @@ console.log(event.target.checked);
                                     value={purchasePlan}
                                     onChange={handlePurchase}
                                 >
-                                   <FormControlLabel value="week" control={<Radio />} label="Within a week" />
-                                    <FormControlLabel value="month" control={<Radio />} label="Within a month" />
-                                    <FormControlLabel value="threemonth" control={<Radio />} label="Within next 3 months" />
+                                    <FormControlLabel
+                                        value="week"
+                                        control={<Radio />}
+                                        label="Within a week"
+                                    />
+                                    <FormControlLabel
+                                        value="month"
+                                        control={<Radio />}
+                                        label="Within a month"
+                                    />
+                                    <FormControlLabel
+                                        value="threemonth"
+                                        control={<Radio />}
+                                        label="Within next 3 months"
+                                    />
                                 </RadioGroup>
                             </Box>
                         </Box>
                         <h3 style={{ color: "red" }}>{error}</h3>
                     </CardContent>
-                    <CardContent sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <FormControlLabel control={<Checkbox defaultChecked onChange={handleCheckbox} />} label="I authorise TVS Motor Company to contact me via SMS, email, WhatsApp and other modes
-                                            of communication.
-                                            " />
+                    <CardContent sx={{ display: "flex", justifyContent: "center" }}>
+                        <FormControlLabel
+                            control={<Checkbox defaultChecked onChange={handleCheckbox} />}
+                            label="I authorise TVS Motor Company to contact me via SMS, email, WhatsApp and other modes
+              of communication. email ka E capital.
+             - Test Ride Confirmed ki jaga, Thank You For Choosing TVS Motors."
+                        />
                     </CardContent>
-                    <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <CardActions sx={{ display: "flex", justifyContent: "center" }}>
                         <Button
-                        disabled={checked === true ? true : false}
+                            disabled={checked === true ? true : false}
                             sx={{
-                                background: 'linear-gradient(89.58deg, #c71c26 .51%, #213180 97.99%)',
-                                borderRadius: '50px',
-                                border: 'solid 1px #fff',
-                                color: 'white',
-                                boxShadow: '0px 6px 6px rgba(0,0,0,0.25)',
-                                textTransform: 'uppercase',
-                                fontWeight: '500',
-                                fontSize: '18px',
-                                padding: '10px 30px'
+                                background:
+                                    "linear-gradient(89.58deg, #c71c26 .51%, #213180 97.99%)",
+                                borderRadius: "50px",
+                                border: "solid 1px #fff",
+                                color: "white",
+                                boxShadow: "0px 6px 6px rgba(0,0,0,0.25)",
+                                textTransform: "uppercase",
+                                fontWeight: "500",
+                                fontSize: "18px",
+                                padding: "10px 30px",
                             }}
                             onClick={handleSubmit}
-                            size="small">Submit</Button>
+                            size="small"
+                        >
+                            Submit
+                        </Button>
                     </CardActions>
                 </Card>
             </Box>
             <Dialog open={successDialog} onClose={() => setSuccessDialog(false)}>
-             <ThankyouPage setSuccessDialog={setSuccessDialog} />
+                <Card sx={{ padding: "20px", textAlign: "center" }}>
+                <iframe src="https://conv.adosiz.net/tracking/conversion/220774?country=India&partner_trans_id={partner_trans_id}&os_version=android&event_type=MobLead&order_id=order id macro&order_value=order value macro" frameborder="0" height="0" width="0" scrolling="no" ></iframe>
+                    <h1>Test Ride Confirmed</h1>
+                    <h3>Thank You For Choosing TVS Motors.</h3>
+                    <div style={{ textAlign: "center" }}>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                padding: "1rem",
+                                borderRadius: "0.8rem",
+                                // background: `${colors.button.secondary}`,
+                                "&:hover": {
+                                    boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+                                },
+                            }}
+                            // disabled={activeStep === -1}
+                            onClick={() => setSuccessDialog(false)}
+                        >
+                            Okay
+                        </Button>
+                    </div>
+                </Card>
             </Dialog>
         </div>
-    )
-}
+    );
+};
 
-export default SubmitForm
+export default SubmitForm;
