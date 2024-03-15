@@ -278,16 +278,16 @@ const SubmitForm = () => {
                                         }}
                                         InputProps={{
                                             style: { borderRadius: "25px", background: "#f2f2f2" },
-                                            endAdornment: (
-                                                <Typography
-                                                    onClick={handleResendOtp}
-                                                    fontWeight={"600"}
-                                                    width={"35%"}
-                                                    style={isValidOtp ? iconStyle : {}}
-                                                >
-                                                    Resend OTP
-                                                </Typography>
-                                            ),
+                                            // endAdornment: (
+                                            //     <Typography
+                                            //         onClick={handleResendOtp}
+                                            //         fontWeight={"600"}
+                                            //         width={"35%"}
+                                            //         style={isValidOtp ? iconStyle : {}}
+                                            //     >
+                                            //         Resend OTP
+                                            //     </Typography>
+                                            // ),
                                         }}
                                         onChange={handleOtp}
                                         value={otpNumber}
