@@ -12,7 +12,7 @@ function App() {
   const isMobileDevice = useMediaQuery('(min-width:787px)');
 
   return (
-    <div style={{ background: "#f3f3f3", height: isMobileDevice ? "100vh" : "100%" }}>
+    <div style={{ background: "#f3f3f3", height: isMobileDevice ? "120vh" : "100%" }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SubmitForm />} />

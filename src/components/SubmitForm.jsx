@@ -41,13 +41,13 @@ const SubmitForm = () => {
     const [otpNumber, setOtpNumber] = useState("");
     const [state, setState] = useState("");
     const [city, setCity] = useState("");
-    const [gender, setGender] = useState("");
+    const [dealer, setDealer] = useState("");
     const [pinCode, setPinCode] = useState("");
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
     const [error, setError] = useState("");
     const [purchasePlan, setPurchasePlan] = useState("");
-    const [successDialog, setSuccessDialog] = useState(false);
+    const [dealerList, setDealerList] = useState([]);
 
     const iconStyle = {
         background: "linear-gradient(89.58deg, #c71c26 .51%, #213180 97.99%)",
@@ -66,7 +66,14 @@ const SubmitForm = () => {
         }
     }, [fullName, email, mobileNumber, otpNumber, city, pinCode, purchasePlan]);
 
-   
+    const fetchDelaerList = async (cityId) => {
+        console.log('cityId', cityId);
+        try {
+            const response = await axios.get(BASE_URL + `/dealer/fetch/${cityId}`);
+            // const states = response?.data?.states;
+            setDealerList(response.data.dealerList);
+        } catch (error) { }
+    };
 
     const fetchState = async () => {
         try {
@@ -110,12 +117,13 @@ const SubmitForm = () => {
     };
     const handleCity = (event) => {
         setCity(event.target.value);
+        fetchDelaerList(event.target.value);
     };
     const handleLocation = (event) => {
         setPinCode(event.target.value);
     };
-    const handleGender = (event) => {
-        setGender(event.target.value);
+    const handleDealer = (event) => {
+        setDealer(event.target.value);
     };
 
     const handleResendOtp = async () => {
@@ -147,7 +155,7 @@ const SubmitForm = () => {
             otp: otpNumber,
             cityId: city,
             pincode: pinCode,
-            // gender: gender,
+            dealerId: dealer?.id,
             purchasePlan: purchasePlan,
         };
         if (
@@ -157,7 +165,8 @@ const SubmitForm = () => {
             otpNumber &&
             city &&
             pinCode &&
-            purchasePlan
+            purchasePlan &&
+            dealer
         ) {
             const response = await axios.post(BASE_URL + "/lead/create", body);
             if (response.data.status === true) {
@@ -263,10 +272,10 @@ const SubmitForm = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={6}>
                                     <TextField
-                                      inputProps={{
-                                        maxLength: 6,
-                                        minlength: 6,
-                                    }}
+                                        inputProps={{
+                                            maxLength: 6,
+                                            minlength: 6,
+                                        }}
                                         InputProps={{
                                             style: { borderRadius: "25px", background: "#f2f2f2" },
                                             endAdornment: (
@@ -350,24 +359,29 @@ const SubmitForm = () => {
                                         value={pinCode}
                                     />
                                 </Grid>
-                                {/* <Grid item xs={12} sm={6} md={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
-                      Gender
-                    </InputLabel>
-                    <Select
-                      sx={{ borderRadius: "25px", background: "#f2f2f2" }}
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={gender}
-                      label="Gender"
-                      onChange={handleGender}
-                    >
-                      <MenuItem value={"male"}>Male</MenuItem>
-                      <MenuItem value={"female"}>Female</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid> */}
+                                <Grid item xs={12} sm={6} md={6}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">
+                                            Dealer
+                                        </InputLabel>
+                                        <Select
+                                            sx={{ borderRadius: "25px", background: "#f2f2f2" }}
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={dealer}
+                                            label="Dealer"
+                                            onChange={handleDealer}
+                                        >
+                                            {
+                                                dealerList.map((dealer, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={dealer}>{dealer.name}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
                             </Grid>
                         </Box>
                         <Box>
